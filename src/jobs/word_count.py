@@ -1,6 +1,6 @@
 import logging
-
 import sys
+
 from pyspark.sql import SparkSession
 
 from data_transformations.word_count import word_count_transformer
@@ -19,9 +19,12 @@ if __name__ == '__main__':
     spark = SparkSession.builder.appName(APP_NAME).getOrCreate()
     sc = spark.sparkContext
     app_name = sc.appName
+
     logging.info("Application Initialized: " + app_name)
     input_path = sys.argv[1]
     output_path = sys.argv[2]
+
     word_count_transformer.run(spark, input_path, output_path)
+
     logging.info("Application Done: " + spark.sparkContext.appName)
     spark.stop()

@@ -1,6 +1,6 @@
 import logging
-
 import sys
+
 from pyspark.sql import SparkSession
 
 from data_transformations.citibike import distance_transformer
@@ -8,9 +8,11 @@ from data_transformations.citibike import distance_transformer
 LOG_FILENAME = 'project.log'
 APP_NAME = "Citibike Pipeline: Distance Calculation"
 
+logging.basicConfig(filename=LOG_FILENAME, level=logging.INFO)
+arguments = sys.argv
+
 if __name__ == '__main__':
-    logging.basicConfig(filename=LOG_FILENAME, level=logging.INFO)
-    arguments = sys.argv
+
     logging.info(f"Argument list passed: {arguments}")
     logging.info(f"length of argument = {len(arguments)}")
 
