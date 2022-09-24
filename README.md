@@ -1,7 +1,5 @@
-## A very simple PySpark application with [Batect](https://github.com/batect/batect)-based build and testing environments.
+# Data transformations with PySpark
 
----
-# Data transformations with Python
 This is a collection of _Python_ jobs that are supposed to transform data.
 These jobs are using _PySpark_ to process larger volumes of data and are supposed to run on a _Spark_ cluster (via `spark-submit`).
 
@@ -56,19 +54,6 @@ A NLP model is dependent on a specific input file. This job is supposed to prepr
 input file for the NLP model (feature engineering). This job will count the occurrences of a word within the given text
 file (corpus). 
 
-There is a dump of the datalake for this under `data/word_count/words.txt` with a text file.
-
-#### Input
-Simple `*.txt` file containing text.
-
-#### Output
-A single `*.csv` file containing data similar to:
-```csv
-"word","count"
-"a","3"
-"an","5"
-...
-```
 
 #### Run the job
 Please make sure to package the code before submitting the spark job (`poetry build`)
@@ -87,27 +72,6 @@ distance each bike was driven. There is a `*.csv` file that contains historical 
 file needs to be processed in multiple steps. There is a pipeline running these jobs.
 
 
-There is a dump of the datalake for this under `data/citibike/citibike.csv` with historical data.
-
-#### Ingest
-Reads a `*.csv` file and transforms it to parquet format. The column names will be sanitized (whitespaces replaced).
-
-##### Input
-Historical bike ride `*.csv` file:
-```csv
-"tripduration","starttime","stoptime","start station id","start station name","start station latitude",...
-364,"2017-07-01 00:00:00","2017-07-01 00:06:05",539,"Metropolitan Ave & Bedford Ave",40.71534825,...
-...
-```
-
-##### Output
-`*.parquet` files containing the same content
-```csv
-"tripduration","starttime","stoptime","start_station_id","start_station_name","start_station_latitude",...
-364,"2017-07-01 00:00:00","2017-07-01 00:06:05",539,"Metropolitan Ave & Bedford Ave",40.71534825,...
-...
-```
-
 ##### Run the job
 Please make sure to package the code before submitting the spark job (`poetry build`)
 ```bash
@@ -125,21 +89,6 @@ It reads the previously ingested data parquet files.
 
 Hint:
  - For distance calculation, we use [**Harvesine formula**](https://en.wikipedia.org/wiki/Haversine_formula) formula. 
-##### Input
-Historical bike ride `*.parquet` files
-```csv
-"tripduration",...
-364,...
-...
-```
-
-##### Outputs
-`*.parquet` files containing historical data with distance column containing the calculated distance.
-```csv
-"tripduration",...,"distance"
-364,...,1.34
-...
-```
 
 ##### Run the job
 Please make sure to package the code before submitting the spark job (`poetry build`)
