@@ -12,11 +12,10 @@ def compute_distance(dataframe: DataFrame) -> DataFrame:
         f.cos(f.radians(f.col('start_station_latitude'))) * f.cos(f.radians(f.col('end_station_latitude'))) *
         f.pow(f.sin(f.radians(f.col('end_station_longitude') - f.col('start_station_longitude')) / 2), 2)
     )).withColumn("distance", f.round(
-        f.atan2(f.sqrt(f.col("distance")), f.sqrt(-f.col("distance") + 1)) * 12742000 / METERS_PER_MILE, 2))).sort(
-        f.col("tripduration"))
+        f.atan2(f.sqrt(f.col("distance")), f.sqrt(-f.col("distance") + 1)) * 12742000 / METERS_PER_MILE, 2)))
 
 
 def run(spark: SparkSession, input_dataset_path: str, transformed_dataset_path: str) -> None:
     input_dataset = spark.read.parquet(input_dataset_path)
-    dataset_with_distances = compute_distance(input_dataset)
+    dataset_with_distances = compute_distance(input_dataset).sort(f.col("starttime"))
     dataset_with_distances.write.parquet(transformed_dataset_path, mode='append')
